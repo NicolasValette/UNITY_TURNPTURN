@@ -13,11 +13,11 @@ namespace Turnpturn.UI
         [SerializeField]
         private TMP_Text _text;
         [SerializeField]
-        private TurnManager _turnManager;
+        private RoundManager _turnManager;
 
         private void OnEnable()
         {
-            TurnManager.OnFightStart += InitUnitList;
+            RoundManager.OnFightStart += InitUnitList;
         }
         private void OnDisable()
         {
@@ -25,7 +25,7 @@ namespace Turnpturn.UI
             {
                 _turnManager.UnitList[i].OnAction -= DisplayAction;
             }
-            TurnManager.OnFightStart -= InitUnitList;
+            RoundManager.OnFightStart -= InitUnitList;
         }
         // Start is called before the first frame update
         void Start()

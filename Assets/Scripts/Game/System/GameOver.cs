@@ -14,11 +14,11 @@ namespace Turnpturn.Game.System
 
         private void OnEnable()
         {
-            TurnManager.OnFightWin += DisplayWinText;
+            RoundManager.OnFightWin += DisplayWinText;
         }
         private void OnDisable()
         {
-            TurnManager.OnFightWin -= DisplayWinText;
+            RoundManager.OnFightWin -= DisplayWinText;
         }
         private void Start()
         {

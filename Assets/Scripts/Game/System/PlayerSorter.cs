@@ -7,21 +7,26 @@ namespace Turnpturn.Game.System
 {
     public class PlayerSorter : MonoBehaviour
     {
+
         [SerializeField]
-        private List<Unit> _unitList;
+        FightersManager _fightersManager;
+
 
         private int _current = -1;
         private int _roundNumber = -1;
 
         private Queue<Unit> _sortedQueue;
 
-        public List<Unit> UnitList { get => _unitList;}
+        public List<Unit> UnitList { get; private set; }
         public bool IsRoundOver
         {
             get
             {
                 return _sortedQueue.Count <= 0;
             }
+        }
+        private void OnEnable()
+        {
         }
         // Start is called before the first frame update
         void Start()
@@ -37,7 +42,7 @@ namespace Turnpturn.Game.System
 
         private void Init()
         {
-
+            UnitList = _fightersManager.GetUnitListFromFighter();
             _sortedQueue = new Queue<Unit>();
             _current = -1;
             _roundNumber = 0;
@@ -51,9 +56,9 @@ namespace Turnpturn.Game.System
         {
             _roundNumber++;
             Debug.Log($"!!!!! New Round {_roundNumber} !!!!!");
-            for (int i = 0; i < _unitList.Count; i++) 
+            for (int i = 0; i < UnitList.Count; i++) 
             {
-                _sortedQueue.Enqueue(_unitList[i]);
+                _sortedQueue.Enqueue(UnitList[i]);
             }
         }
         public Unit GetNextPlayer()

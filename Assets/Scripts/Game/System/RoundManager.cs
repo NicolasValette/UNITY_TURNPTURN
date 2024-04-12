@@ -6,16 +6,17 @@ using UnityEngine;
 
 namespace Turnpturn.Game.System
 {
-    public class TurnManager : MonoBehaviour
+    public class RoundManager : MonoBehaviour
     {
         [SerializeField]
         private PlayerSorter _playerSorter;
 
         private Unit _currentUnit;
         private bool _isFightFinished;
-
+        private bool _isInitState;
 
         public static event Action OnFightWin;
+        public static event Action OnNewTurn;
         public static event Action<List<Unit>> OnFightStart;
 
         public List<Unit> UnitList { get { return _playerSorter.UnitList; } }
@@ -31,15 +32,18 @@ namespace Turnpturn.Game.System
         // Start is called before the first frame update
         void Start()
         {
-            _isFightFinished = false;
-            OnFightStart?.Invoke(UnitList);
-            NextTurn();
+            _isInitState = true;
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (_isFightFinished)
+            if (_isInitState)
+            {
+                _isInitState = false;
+                InitRoundManager();
+            }
+            else if (_isFightFinished)
             {
                 OnFightWin?.Invoke();
             }
@@ -50,10 +54,18 @@ namespace Turnpturn.Game.System
             }
         }
 
+        private void InitRoundManager()
+        {
+            _isFightFinished = false;
+            OnFightStart?.Invoke(UnitList);
+            NextTurn();
+        }
+
         private void NextTurn()
         {
             _currentUnit =  _playerSorter.GetNextPlayer();
             Debug.Log($"{_currentUnit.UnitName}'s turn.");
+            OnNewTurn?.Invoke();
             _currentUnit.StartTurn();
         }
         private bool IsTurnFinish()

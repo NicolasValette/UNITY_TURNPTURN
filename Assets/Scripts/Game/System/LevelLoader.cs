@@ -32,15 +32,29 @@ namespace Turnpturn.Game.System
         {
             StartCoroutine(LoadLevel(buildIndex));
         }
+        public void LoadSpecificLevel(string sceneName)
+        {
+            StartCoroutine(LoadLevel(sceneName));
+        }
 
 
         private IEnumerator LoadLevel(int levelIndex)
         {
+            Debug.Log("Load Scene");
             _transition.SetTrigger("StartTransition");
 
             yield return new WaitForSeconds(_transitionTime);
 
             SceneManager.LoadScene(levelIndex);
+        }
+        private IEnumerator LoadLevel(string sceneName)
+        {
+            Debug.Log("Load Scene");
+            _transition.SetTrigger("StartTransition");
+
+            yield return new WaitForSeconds(_transitionTime);
+
+            SceneManager.LoadScene(sceneName);
         }
 
 

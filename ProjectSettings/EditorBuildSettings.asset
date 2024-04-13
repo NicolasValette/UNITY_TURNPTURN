@@ -9,6 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/StartScene.unity
     guid: 6af0408189652374c8cf237fda9d4c5d
   - enabled: 1
+    path: Assets/Scenes/CampScene.unity
+    guid: ce66c042a097b1142bbdf2165013623a
+  - enabled: 1
     path: Assets/Scenes/FightScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/GameOverScene.unity
+    guid: bf6f30c88409cfe4ca7e5bae423c1a82
   m_configObjects: {}

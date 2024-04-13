@@ -13,9 +13,12 @@ namespace Turnpturn.Game.System
 
         private Unit _currentUnit;
         private bool _isFightFinished;
+        private bool _isEnnemyDead;
         private bool _isInitState;
+        private bool _isGameOver = false;
 
         public static event Action OnFightWin;
+        public static event Action OnFightLoose;
         public static event Action OnNewTurn;
         public static event Action<List<Unit>> OnFightStart;
 
@@ -43,27 +46,38 @@ namespace Turnpturn.Game.System
                 _isInitState = false;
                 InitRoundManager();
             }
-            else if (_isFightFinished)
+
+            if (!_isFightFinished)
             {
-                OnFightWin?.Invoke();
-            }
-            else if (IsTurnFinish())
-            {
-                Debug.Log($"End of {_currentUnit.UnitName}'s turn.");
-                NextTurn();
+                if (_isGameOver)
+                {
+                    _isFightFinished = true;
+                    OnFightLoose?.Invoke();
+                }
+                else if (_isEnnemyDead)
+                {
+                    _isFightFinished = true;
+                    OnFightWin?.Invoke();
+                }
+                else if (IsTurnFinish())
+                {
+                    Debug.Log($"End of {_currentUnit.UnitName}'s turn.");
+                    NextTurn();
+                }
             }
         }
 
         private void InitRoundManager()
         {
             _isFightFinished = false;
+            _isEnnemyDead = false;
             OnFightStart?.Invoke(UnitList);
             NextTurn();
         }
 
         private void NextTurn()
         {
-            _currentUnit =  _playerSorter.GetNextPlayer();
+            _currentUnit = _playerSorter.GetNextPlayer();
             Debug.Log($"{_currentUnit.UnitName}'s turn.");
             OnNewTurn?.Invoke();
             _currentUnit.StartTurn();
@@ -76,11 +90,15 @@ namespace Turnpturn.Game.System
         // TODO A CHANGER
         private void UnitDeath(Unit deadUnit)
         {
-            if (deadUnit.UnitName.Equals("Sephiroth"))
+            if (deadUnit.UnitType == Datas.UnitTypePrefabsData.UnitType.Ennemy)
             {
-                _isFightFinished = true;
+                _isEnnemyDead = true;
+            }
+            else
+            {
+                _isGameOver = true;
             }
         }
-        
+
     }
 }

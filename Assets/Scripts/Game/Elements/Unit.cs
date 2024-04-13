@@ -17,20 +17,18 @@ namespace Turnpturn.Game.Elements
 
         [Header("Description")]
         [SerializeField]
-        protected string _unitName;
-        [SerializeField]
         protected UnitData _unitData;
         [SerializeField]
         protected UnitTypePrefabsData.UnitType _unitType;
         [SerializeField]
         protected GameObject _actionPickerGameObject;
 
-        [Header("Actions")]
-        [SerializeField]
-        protected List<Attack> _actions;
+    
 
         [SerializeField]
         protected FightersManager _fighterManager;
+
+        protected List<Attack> _actions;
 
         protected IPlayAnim _animPlayer;
         protected IChooseAction _actionPicker;
@@ -39,23 +37,25 @@ namespace Turnpturn.Game.Elements
         public static event Action<Unit> OnDeath;
 
         public List<Attack> Actions { get { return _actions; } }
-        public int CurrentHP { get; private set; }
+        public int CurrentHP { 
+            get => _unitData.CurrentHealth; 
+            private set => _unitData.CurrentHealth = value;
+        }
         public bool IsAlive
         {
             get
             {
-                return CurrentHP >= 0;
+                return _unitData.CurrentHealth >= 0;
             }
         }
         public bool IsFinished { get; private set; }
-        public string UnitName => _unitName;
+        public string UnitName => _unitData.UnitName;
         public UnitData UnitCarac => _unitData;
 
         public UnitTypePrefabsData.UnitType UnitType { get => _unitType; }
         // Start is called before the first frame update
         void Start()
         {
-            InitUnit();
         }
 
         // Update is called once per frame
@@ -64,16 +64,41 @@ namespace Turnpturn.Game.Elements
 
         }
 
-        public void InitUnit()
+        public void InitUnit(UnitData data=null, int hp = -1)
         {
             _animPlayer = GetComponent<IPlayAnim>();
+            if (data!=null)
+            {
+                _unitData = data;
+            }
             if (_actionPickerGameObject != null)
             {
                 _actionPicker = _actionPickerGameObject.GetComponent<IChooseAction>();
             }
-            CurrentHP = _unitData.MaxHealth;
+            CurrentHP = (hp <= -1)?_unitData.MaxHealth:hp;
+
+            if (data!=null)
+            {
+                SetAttack(data.Attacks);
+            }
+            else
+            {
+                Debug.LogError($"Missing attack {UnitName}");
+            }
         }
 
+        public void SetAttack(List<Attack> attacks)
+        {
+            if (attacks == null || attacks.Count == 0)
+            {
+                Debug.LogError($"Missing attack {UnitName}"); 
+            }
+            _actions = new List<Attack>(attacks);
+            for (int i=0; i<attacks.Count;i++)
+            {
+                attacks[i].Init();
+            }
+        }
         public void StartTurn()
         {
             IsFinished = false;
@@ -83,7 +108,7 @@ namespace Turnpturn.Game.Elements
             }
             else
             {
-                EndTurn();
+               // EndTurn();
             }
         }
 
@@ -104,19 +129,27 @@ namespace Turnpturn.Game.Elements
 
         public void TakeDamage(int amount)
         {
-            //Animation
-            if (_animPlayer != null)
-            {
-                _animPlayer.PlayAnim("TakeDmg");
-            }
+          
             //FX
 
-
-            Debug.Log($"{_unitName}(HP :{CurrentHP}) take {amount} damages");
+            Debug.Log($"{UnitName}(HP :{CurrentHP}) take {amount} damages");
             CurrentHP -= amount;
+
+            //Animation
             if (CurrentHP <= 0)
             {
-                OnDeath?.Invoke(this);
+                if (_animPlayer != null)
+                {
+                    _animPlayer.PlayAnim("Death");
+                }
+                StartCoroutine(WaitBeforeDeath(1f));
+            }
+            else 
+            {
+                if (_animPlayer != null)
+                {
+                    _animPlayer.PlayAnim("TakeDmg");
+                }
             }
         }
         public void Attack(Attack attack)
@@ -134,10 +167,15 @@ namespace Turnpturn.Game.Elements
             //FX
             
 
-            Debug.Log($"{_unitName}(HP :{CurrentHP}) attack {target.name}(HP :{target.CurrentHP})");
+            Debug.Log($"{UnitName}(HP :{CurrentHP}) attack {target.name}(HP :{target.CurrentHP})");
             //_attack.InflictDamge(target, _attack.AttackData.AttackDmg);
             ActionType act = attack.PerformAction(this, target);
             OnAction?.Invoke(act);
+        }
+        private IEnumerator WaitBeforeDeath (float waitingTime)
+        {
+            yield return new WaitForSeconds(waitingTime);
+            OnDeath?.Invoke(this);
         }
     }
 }

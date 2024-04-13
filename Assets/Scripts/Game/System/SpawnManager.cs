@@ -27,9 +27,33 @@ public class SpawnManager : MonoBehaviour
     {
         return Instantiate(_unitPrefabs.EnnemyPrefab, _ennemySpawnPosList[0].position, Quaternion.identity);
     }
+    public GameObject SpawnEnnemy(UnitData unitData, int positionSlot = 0)
+    {
+        if (positionSlot < _ennemySpawnPosList.Count)
+        {
+            unitData.CurrentHealth = unitData.MaxHealth;
+            GameObject go = Instantiate(unitData.PrefabUnit, _ennemySpawnPosList[positionSlot].position, Quaternion.identity);
+            go.name = unitData.UnitName;
+            go.GetComponent<Unit>().InitUnit(unitData, unitData.CurrentHealth);
+            return go;
+        }
+        else return null;
+    }
     public GameObject SpawnHero()
     {
         return Instantiate(_unitPrefabs.HeroPrefab, _heroSpawnPosList[0].position, Quaternion.identity);
         
+    }
+    public GameObject SpawnUnit(UnitData unitData)
+    {
+        GameObject go = Instantiate(unitData.PrefabUnit, _heroSpawnPosList[0].position, Quaternion.identity);
+        go.name = unitData.UnitName;
+        go.GetComponent<Unit>().InitUnit(unitData, unitData.CurrentHealth);
+        UnitPlayer unitp = go.GetComponent<UnitPlayer>();
+        if (unitp != null)
+        {
+            unitp.SetActionPicker(_actionPickerForPlayer);
+        }
+        return go;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Turnpturn.Game.Elements;
@@ -16,6 +17,7 @@ namespace Turnpturn.Game.System
         private int _roundNumber = -1;
 
         private Queue<Unit> _sortedQueue;
+       
 
         public List<Unit> UnitList { get; private set; }
         public bool IsRoundOver
@@ -25,6 +27,8 @@ namespace Turnpturn.Game.System
                 return _sortedQueue.Count <= 0;
             }
         }
+
+        public static event Action<int> OnNewRound;
         private void OnEnable()
         {
         }
@@ -56,6 +60,7 @@ namespace Turnpturn.Game.System
         {
             _roundNumber++;
             Debug.Log($"!!!!! New Round {_roundNumber} !!!!!");
+            OnNewRound?.Invoke(_roundNumber++);
             for (int i = 0; i < UnitList.Count; i++) 
             {
                 _sortedQueue.Enqueue(UnitList[i]);

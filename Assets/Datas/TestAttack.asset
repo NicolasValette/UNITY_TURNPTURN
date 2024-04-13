@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eca29f3bc7ec91a4d8de2c351478eff9, type: 3}
   m_Name: TestAttack
   m_EditorClassIdentifier: 
-  _attackName: Attack de Test
+  _attackName: Attack (2DMG)
   _attackDmg: 2
   _attackPrice: 0
   _attackCDR: 0

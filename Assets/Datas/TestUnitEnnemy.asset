@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb52f86feaa172a448034e077f53f4a0, type: 3}
   m_Name: TestUnitEnnemy
   m_EditorClassIdentifier: 
-  _maxHealth: 10
+  _unitName: Sephiroth
+  _maxHealth: 15
+  _attacks:
+  - {fileID: 3364406001207698400, guid: 3674fe5e04056204e8d55503cb56a8c7, type: 3}
+  _prefabUnit: {fileID: 1547935359428554453, guid: 4a64e85ed787c7a459854fef2f266339, type: 3}

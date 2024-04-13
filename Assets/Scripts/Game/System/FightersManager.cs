@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Turnpturn.Datas;
+using Turnpturn.Datas.Game;
 using Turnpturn.Game.Elements;
+using Turnpturn.Game.System;
 using UnityEngine;
 
 public class FightersManager : MonoBehaviour
@@ -10,17 +12,26 @@ public class FightersManager : MonoBehaviour
     private SpawnManager _spawnManager;
     [SerializeField]
     private FightersData _fighters;
+    [SerializeField]
+    private PlayerData _playerData;
 
-
+    private void OnEnable()
+    {
+        RoundManager.OnFightWin += WinFight;
+    }
+    private void OnDisable()
+    {
+        RoundManager.OnFightWin -= WinFight;
+    }
     private void Awake()
     {
         _fighters.Init();
-        InstantiateFighter();
+        InstantiateFighter(_playerData.ChosenPathData.ChosenScenario);
     }
-    public FightersData InstantiateFighter()
+    public FightersData InstantiateFighter(FightScenarioData scenario)
     {
-        _fighters.Ennemies.Add(_spawnManager.SpawnEnnemy());
-        _fighters.Heroes.Add(_spawnManager.SpawnPlayableHero());
+        _fighters.Ennemies.Add(_spawnManager.SpawnEnnemy(scenario.CurrentEnnemy));
+        _fighters.Heroes.Add(_spawnManager.SpawnUnit(_playerData.ChosenUnitData));
         return _fighters;
     }
     
@@ -99,5 +110,9 @@ public class FightersManager : MonoBehaviour
             list.Add(_fighters.Ennemies[i].GetComponent<Unit>());
         }
         return list;
+    }
+    private void WinFight()
+    {
+        _playerData.WinFight();
     }
 }

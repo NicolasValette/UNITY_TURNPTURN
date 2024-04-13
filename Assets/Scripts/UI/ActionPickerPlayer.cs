@@ -26,7 +26,8 @@ namespace Turnpturn.UI
         [Header("TargetPanel")]
         [SerializeField]
         private GameObject _targetPanel;
-
+        [SerializeField]
+        private UIClickButtonPlayer _buttonClickPlayer;
         private Unit _currentUnit;
         private Attack _selectedActions;
         private List<GameObject> _buttonList;
@@ -45,7 +46,7 @@ namespace Turnpturn.UI
 
         public void ChooseAction(Unit unit)
         {
-            
+
             _panel.SetActive(true);
             _targetPanel.SetActive(false);
             _currentUnit = unit;
@@ -68,28 +69,32 @@ namespace Turnpturn.UI
             _buttonList = new List<GameObject>();
             for (int i = 0; i < actions.Count; i++)
             {
-
-                GameObject newButton = Instantiate(_buttonPrefab);
-                newButton.transform.SetParent(_actionsPanel.transform, false);
-
-                //delegate test Test(1);
-                //newButton.GetComponent<Button>().onClick.AddListener(delegate { Test(1); });
                 Attack actionSel = actions[i];
-                newButton.GetComponent<Button>().onClick.AddListener(() => _selectedActions = actionSel);
-                newButton.GetComponent<Button>().onClick.AddListener(() => _actionsPanel.SetActive(false));
-                newButton.GetComponent<Button>().onClick.AddListener(BuildTargetList);
+                if (actionSel.IsAvailable)
+                {
+                    GameObject newButton = Instantiate(_buttonPrefab);
+                    newButton.transform.SetParent(_actionsPanel.transform, false);
+
+                    //delegate test Test(1);
+                    //newButton.GetComponent<Button>().onClick.AddListener(delegate { Test(1); });
+
+                    newButton.GetComponent<Button>().onClick.AddListener(() => _selectedActions = actionSel);
+                    newButton.GetComponent<Button>().onClick.AddListener(() => _actionsPanel.SetActive(false));
+                    newButton.GetComponent<Button>().onClick.AddListener(() => _buttonClickPlayer.PlayClick());
+                    newButton.GetComponent<Button>().onClick.AddListener(BuildTargetList);
 
 
-                //delegate { SomeMethodName(SomeObject); })
+                    //delegate { SomeMethodName(SomeObject); })
 
 
-                newButton.GetComponentInChildren<TMP_Text>().text = actions[i].AttackData.AttackName;
-                _buttonList.Add(newButton);
+                    newButton.GetComponentInChildren<TMP_Text>().text = actions[i].AttackData.AttackName;
+                    _buttonList.Add(newButton);
+                }
             }
         }
         private void CleanButtonList()
         {
-            for (int i=0; i < _buttonList.Count;i++)
+            for (int i = 0; i < _buttonList.Count; i++)
             {
                 Destroy(_buttonList[i]);
             }
@@ -104,7 +109,7 @@ namespace Turnpturn.UI
 
             for (int i = 0; i < opponentList.Count; i++)
             {
-                
+
                 GameObject newButton = Instantiate(_buttonPrefab);
                 newButton.transform.SetParent(_targetPanel.transform, false);
 
@@ -113,7 +118,7 @@ namespace Turnpturn.UI
                 Unit target = opponentList[i];
                 newButton.GetComponent<Button>().onClick.AddListener(() => MakeAction(target));
                 //newButton.GetComponent<Button>().onClick.AddListener(delegate { MakeAction(opponentList[i]); });
-
+                newButton.GetComponent<Button>().onClick.AddListener(() => _buttonClickPlayer.PlayClick());
                 //delegate { SomeMethodName(SomeObject); })
 
 
@@ -122,6 +127,6 @@ namespace Turnpturn.UI
             }
         }
 
-        
+
     }
 }

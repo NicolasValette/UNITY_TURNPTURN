@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Turnpturn.Datas.Game;
+using Turnpturn.Game.Elements;
 using UnityEngine;
 
 namespace Turnpturn.Game.System
@@ -21,16 +22,20 @@ namespace Turnpturn.Game.System
         private string _gameOverSceneName;
         [SerializeField]
         private string _campSceneName;
+        [SerializeField]
+        private string _ennemyName;
 
         private void OnEnable()
         {
             RoundManager.OnFightWin += WinFight;
             RoundManager.OnFightLoose += LooseFight;
+            RoundManager.OnFightStart += RememberEnnemyName;
         }
         private void OnDisable()
         {
             RoundManager.OnFightWin -= WinFight;
             RoundManager.OnFightLoose -= LooseFight;
+            RoundManager.OnFightStart -= RememberEnnemyName;
         }
         private void Start()
         {
@@ -41,19 +46,22 @@ namespace Turnpturn.Game.System
         {
 
         }
-
+        private void RememberEnnemyName (List<Unit> unitList)
+        {
+            _ennemyName = _playerData.ChosenPathData.ChosenScenario.CurrentEnnemy.UnitName;
+        }
         private void LooseFight()
         {
             _winGameObject.SetActive(true);
-            string name = _playerData.ChosenPathData.ChosenScenario.GetSpecificEnnemy(_playerData.ChosenPathData.ChosenScenario.CurrentFight - 1)?.UnitName;
-            _wintext.text = $"{name} defeat you !";
+            //string name = _playerData.ChosenPathData.ChosenScenario.GetSpecificEnnemy(_playerData.ChosenPathData.ChosenScenario.CurrentFight)?.UnitName;
+            _wintext.text = $"{_ennemyName} defeat you !";
             _levelLoader.LoadSpecificLevel(_gameOverSceneName);
         }
         private void WinFight()
         {
             _winGameObject.SetActive(true);
-            string name = _playerData.ChosenPathData.ChosenScenario.GetSpecificEnnemy(_playerData.ChosenPathData.ChosenScenario.CurrentFight - 1)?.UnitName;
-            _wintext.text = $"You defeat {name} !";
+            //string name = _playerData.ChosenPathData.ChosenScenario.GetSpecificEnnemy(_playerData.ChosenPathData.ChosenScenario.CurrentFight - 1)?.UnitName;
+            _wintext.text = $"You defeat {_ennemyName} !";
             _levelLoader.LoadSpecificLevel(1);
         }
     }

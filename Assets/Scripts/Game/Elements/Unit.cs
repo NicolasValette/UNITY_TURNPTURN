@@ -22,8 +22,9 @@ namespace Turnpturn.Game.Elements
         protected UnitTypePrefabsData.UnitType _unitType;
         [SerializeField]
         protected GameObject _actionPickerGameObject;
+        [SerializeField]
+        protected GameObject _selectorGameObject;
 
-    
 
         [SerializeField]
         protected FightersManager _fighterManager;
@@ -35,6 +36,7 @@ namespace Turnpturn.Game.Elements
 
         public event Action<ActionType> OnAction;
         public static event Action<Unit> OnDeath;
+        public static event Action OnSelected;
 
         public List<Attack> Actions { get { return _actions; } }
         public int CurrentHP { 
@@ -53,6 +55,15 @@ namespace Turnpturn.Game.Elements
         public UnitData UnitCarac => _unitData;
 
         public UnitTypePrefabsData.UnitType UnitType { get => _unitType; }
+
+        private void OnEnable()
+        {
+            Unit.OnSelected += HideSelector;
+        }
+        private void OnDisable()
+        {
+            Unit.OnSelected -= HideSelector;
+        }
         // Start is called before the first frame update
         void Start()
         {
@@ -66,6 +77,7 @@ namespace Turnpturn.Game.Elements
 
         public void InitUnit(UnitData data=null, int hp = -1)
         {
+            _selectorGameObject.SetActive(false);
             _animPlayer = GetComponent<IPlayAnim>();
             if (data!=null)
             {
@@ -176,6 +188,26 @@ namespace Turnpturn.Game.Elements
         {
             yield return new WaitForSeconds(waitingTime);
             OnDeath?.Invoke(this);
+        }
+
+        public void HideSelector()
+        {
+            _selectorGameObject.SetActive(false);
+
+        }
+        public void ShowSelector()
+        {
+            OnSelected?.Invoke();
+            _selectorGameObject.SetActive(true);
+        }
+
+        private void OnMouseEnter()
+        {
+            ShowSelector();
+        }
+        private void OnMouseExit()
+        {
+            HideSelector();   
         }
     }
 }

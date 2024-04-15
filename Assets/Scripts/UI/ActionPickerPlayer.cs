@@ -5,6 +5,7 @@ using Turnpturn.Game.Actions;
 using Turnpturn.Game.Elements;
 using Turnpturn.Interfaces.Game.IA;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Turnpturn.UI
@@ -119,11 +120,18 @@ namespace Turnpturn.UI
                 newButton.GetComponent<Button>().onClick.AddListener(() => MakeAction(target));
                 //newButton.GetComponent<Button>().onClick.AddListener(delegate { MakeAction(opponentList[i]); });
                 newButton.GetComponent<Button>().onClick.AddListener(() => _buttonClickPlayer.PlayClick());
+                newButton.GetComponent<Button>().onClick.AddListener(() => target.HideSelector());
+                newButton.GetComponent<OnMouseOverButton>().SetOverTarget(target);
                 //delegate { SomeMethodName(SomeObject); })
-
-
+                
                 newButton.GetComponentInChildren<TMP_Text>().text = opponentList[i].UnitName;
                 _buttonList.Add(newButton);
+                if (i == 0)
+                {
+                    EventSystem.current.SetSelectedGameObject(null);
+                    EventSystem.current.SetSelectedGameObject(newButton);
+                    target.ShowSelector();
+                }
             }
         }
 

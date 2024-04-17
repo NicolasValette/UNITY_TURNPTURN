@@ -8,6 +8,7 @@ using Turnpturn.Interfaces.Effects;
 using Turnpturn.Interfaces.Game;
 using Turnpturn.Interfaces.Game.IA;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Turnpturn.Game.Elements
 {
@@ -24,19 +25,27 @@ namespace Turnpturn.Game.Elements
         protected GameObject _actionPickerGameObject;
         [SerializeField]
         protected GameObject _selectorGameObject;
+        [SerializeField]
+        protected Transform _damageTextSpawnPos;
 
 
         [SerializeField]
         protected FightersManager _fighterManager;
+        [SerializeField]
+        protected float _waitingTimeBetweenTurn;
 
         protected List<Attack> _actions;
 
         protected IPlayAnim _animPlayer;
         protected IChooseAction _actionPicker;
 
+        private Attack _currentAction;
+
         public event Action<ActionType> OnAction;
+        public event Action OnHealthModified;
         public static event Action<Unit> OnDeath;
         public static event Action OnSelected;
+
 
         public List<Attack> Actions { get { return _actions; } }
         public int CurrentHP { 
@@ -53,6 +62,7 @@ namespace Turnpturn.Game.Elements
         public bool IsFinished { get; private set; }
         public string UnitName => _unitData.UnitName;
         public UnitData UnitCarac => _unitData;
+        public Transform DamageTestSpawnPos { get => _damageTextSpawnPos; }
 
         public UnitTypePrefabsData.UnitType UnitType { get => _unitType; }
 
@@ -72,7 +82,7 @@ namespace Turnpturn.Game.Elements
         // Update is called once per frame
         void Update()
         {
-
+            
         }
 
         public void InitUnit(UnitData data=null, int hp = -1)
@@ -146,7 +156,7 @@ namespace Turnpturn.Game.Elements
 
             Debug.Log($"{UnitName}(HP :{CurrentHP}) take {amount} damages");
             CurrentHP -= amount;
-
+            
             //Animation
             if (CurrentHP <= 0)
             {
@@ -164,6 +174,11 @@ namespace Turnpturn.Game.Elements
                 }
             }
         }
+        public void DamageTaken()
+        {
+            Debug.Log("Dmgtaken");
+            OnHealthModified?.Invoke();
+        }
         public void Attack(Attack attack)
         {
             Unit target = _fighterManager.GetOpponent(this);
@@ -171,18 +186,25 @@ namespace Turnpturn.Game.Elements
         }
         public void Attack(Attack attack, Unit target)
         {
+            _currentAction = attack;
             //Animation
             if (_animPlayer != null)
             {
                 _animPlayer.PlayAnim("Attack");
+                
             }
             //FX
             
 
+        }
+        public void AttackAfterAnimation()
+        {
+            Unit target = _fighterManager.GetOpponent(this);
             Debug.Log($"{UnitName}(HP :{CurrentHP}) attack {target.name}(HP :{target.CurrentHP})");
             //_attack.InflictDamge(target, _attack.AttackData.AttackDmg);
-            ActionType act = attack.PerformAction(this, target);
+            ActionType act = _currentAction.PerformAction(this, target);
             OnAction?.Invoke(act);
+            Wait(_waitingTimeBetweenTurn, EndTurn);
         }
         private IEnumerator WaitBeforeDeath (float waitingTime)
         {
@@ -209,5 +231,6 @@ namespace Turnpturn.Game.Elements
         {
             HideSelector();   
         }
+        
     }
 }

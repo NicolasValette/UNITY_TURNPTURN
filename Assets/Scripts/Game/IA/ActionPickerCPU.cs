@@ -34,7 +34,7 @@ namespace Turnpturn.Game.IA
         private void MakeAction(Unit unit)
         {
             unit.Attack(unit.Actions[0]);
-            EndAction(unit);
+           // EndAction(unit);
         }
 
     }

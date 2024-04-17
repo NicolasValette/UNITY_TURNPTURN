@@ -4,27 +4,37 @@ using TMPro;
 using Turnpturn.Game.Elements;
 using Turnpturn.Game.System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Turnpturn.UI
 {
+    /// <summary>
+    /// Script to manage the information of fighters (hp)
+    /// 
+    /// </summary>
     public class FightersDisplay : MonoBehaviour
     {
         [SerializeField]
         private FightersManager _fightersManager;
         [SerializeField]
-        private List<TMP_Text> _heroTextList;
-        [SerializeField]
-        private List<TMP_Text> _ennemyTextList;
+        private GameObject _healthBarePrefabGameObject;
 
+        [SerializeField]
+        private GameObject _heroHealthPanel;
+ 
+        [SerializeField]
+        private GameObject _ennemyHealthPanel;
+
+        
 
         private void OnEnable()
         {
-            RoundManager.OnNewTurn += UpdateDisplay;
+            RoundManager.OnFightStart += SetupHealthBar;
                 
         }
         private void OnDisable()
         {
-            RoundManager.OnNewTurn -= UpdateDisplay;
+            RoundManager.OnFightStart -= SetupHealthBar;
         }
         // Start is called before the first frame update
         void Start()
@@ -38,17 +48,26 @@ namespace Turnpturn.UI
 
         }
         
-        private void UpdateDisplay()
+ 
+        private void InstantianteBar (Unit unit, GameObject parentPannel)
         {
-            List<Unit> listH = _fightersManager.GetHeroUnitList();
-            for (int i = 0; i < listH.Count; i++)
+            GameObject go = Instantiate(_healthBarePrefabGameObject);
+            go.transform.SetParent(parentPannel.transform, false);
+            go.GetComponent<HealthBar>().SetupHealthBar(unit);
+           
+        }
+        private void SetupHealthBar(List<Unit> listUnit)
+        {
+            for (int i=0; i<listUnit.Count; i++)
             {
-                _heroTextList[i].text = $"{listH[i].UnitName} - {listH[i].CurrentHP} / {listH[i].UnitCarac.MaxHealth}";
-            }
-            List<Unit> listE = _fightersManager.GetEnnemyUnitList();
-            for (int i = 0; i < listE.Count; i++)
-            {
-                _ennemyTextList[i].text = $"{listE[i].UnitName} - {listE[i].CurrentHP} / {listE[i].UnitCarac.MaxHealth}";
+                if (listUnit[i].UnitType == Datas.UnitTypePrefabsData.UnitType.Ennemy)
+                {
+                    InstantianteBar(listUnit[i], _ennemyHealthPanel);
+                }
+                else if (listUnit[i].UnitType == Datas.UnitTypePrefabsData.UnitType.Hero)
+                {
+                    InstantianteBar(listUnit[i], _heroHealthPanel);
+                }
             }
         }
     }

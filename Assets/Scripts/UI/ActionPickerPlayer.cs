@@ -60,7 +60,7 @@ namespace Turnpturn.UI
             CleanButtonList();
             _currentUnit.Attack(_selectedActions, target);
 
-            _currentUnit.Wait(0.25f, _currentUnit.EndTurn);
+           // _currentUnit.Wait(0.25f, _currentUnit.EndTurn);
         }
 
         private void BuildButtonList(List<Attack> actions)

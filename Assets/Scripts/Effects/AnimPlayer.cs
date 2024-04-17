@@ -14,6 +14,14 @@ namespace Turnpturn.Effects
         public void PlayAnim(string trigger)
         {
             _animator.SetTrigger(trigger);
+            //var s = _animator.GetNextAnimatorClipInfo(0);
+
+
+            //float l = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
+            //string name = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+            //Debug.Log($"l = {l} / name {name}");
+            
+            
         }
     }
 }

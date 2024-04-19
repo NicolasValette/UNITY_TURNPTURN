@@ -35,5 +35,17 @@ namespace Turnpturn.UI
             _musicSlider.value = _audioPlayer.MusicVolume;
             _sfxSlider.value = _audioPlayer.SFXVolume;
         }
+        public void SetMasterVolume(float volume)
+        {
+            _audioPlayer.SetMasterVolume(volume);
+        }
+        public void SetMusicVolume(float volume)
+        {
+            _audioPlayer.SetMusicVolume(volume);
+        }
+        public void SetSFXVolume(float volume)
+        {
+            _audioPlayer.SetSFXVolume(volume);
+        }
     }
 }

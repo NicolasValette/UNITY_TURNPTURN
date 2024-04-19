@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3629947394170027983, guid: 7c0b1c500fe1d694b8ab2a1a8e9d0ab8, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0cb2c92db9a33ee4a80adfe36bbe1e52, type: 2}
     - target: {fileID: 4922143919207393946, guid: 7c0b1c500fe1d694b8ab2a1a8e9d0ab8, type: 3}
       propertyPath: m_Name
       value: Sephiroth Variant

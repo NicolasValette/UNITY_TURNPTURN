@@ -88,7 +88,7 @@ namespace Turnpturn.UI
                     //delegate { SomeMethodName(SomeObject); })
 
 
-                    newButton.GetComponentInChildren<TMP_Text>().text = actions[i].AttackData.AttackName;
+                    newButton.GetComponentInChildren<TMP_Text>().text = $"{actions[i].AttackData.AttackName}({actions[i].AttackData.AttackElement.ElementName})";
                     _buttonList.Add(newButton);
                 }
             }

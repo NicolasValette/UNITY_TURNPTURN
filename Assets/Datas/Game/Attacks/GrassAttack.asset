@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eca29f3bc7ec91a4d8de2c351478eff9, type: 3}
-  m_Name: TestAttack
+  m_Name: GrassAttack
   m_EditorClassIdentifier: 
-  _attackName: Attack (2DMG)
+  _attackName: Water
   _attackDmg: 2
   _attackPrice: 0
   _attackCDR: 0
+  _attackElement: {fileID: 11400000, guid: f7841cd7a43dcc8428caad4958405c79, type: 2}

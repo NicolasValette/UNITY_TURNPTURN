@@ -6,6 +6,6 @@ namespace Turnpturn.Interfaces.Game
 {
     public interface IInflictDamage
     {
-        void InflictDamge (IDamageable target, int damage);
+        int InflictDamge (IDamageable target, int damage);
     }
 }

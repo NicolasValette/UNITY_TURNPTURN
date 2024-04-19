@@ -15,11 +15,14 @@ namespace Turnpturn.Datas
         private int _attackPrice;
         [SerializeField]
         private int _attackCDR;
+        [SerializeField]
+        private ElementalTypeData _attackElement;
 
         public string AttackName { get => _attackName; }
         public int AttackDmg { get => _attackDmg; }
         public int AttackPrice { get => _attackPrice; }
         public int AttackCDR { get => _attackCDR; }
+        public ElementalTypeData AttackElement { get => _attackElement; }
 
     }
 }

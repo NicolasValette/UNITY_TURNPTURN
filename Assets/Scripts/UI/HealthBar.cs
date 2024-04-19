@@ -37,7 +37,7 @@ namespace Turnpturn.UI
             _targetUnit = unit;
             _healthSlider.maxValue = unit.UnitCarac.MaxHealth;
             _healthSlider.value = unit.CurrentHP;
-            _name.text = unit.UnitName;
+            _name.text = $"{unit.UnitName} ({unit.UnitElement.ElementName})";
             unit.OnHealthModified += ModifyHealth;
             //unit.OnAction += ModifyHealth;
         }
@@ -61,6 +61,7 @@ namespace Turnpturn.UI
                 yield return null;
             }
             _healthSlider.value = targetValue;
+            _targetUnit.TargetActionComplete();
         }
     }
 }

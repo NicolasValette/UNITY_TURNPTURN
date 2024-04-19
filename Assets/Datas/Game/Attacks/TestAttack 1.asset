@@ -16,3 +16,4 @@ MonoBehaviour:
   _attackDmg: 4
   _attackPrice: 0
   _attackCDR: 2
+  _attackElement: {fileID: 11400000, guid: f7841cd7a43dcc8428caad4958405c79, type: 2}

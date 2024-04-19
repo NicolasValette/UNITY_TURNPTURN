@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3455324767059061608}
   - component: {fileID: 3364406001207698400}
   m_Layer: 0
-  m_Name: Attack
+  m_Name: Attack-Water(2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0436458568c1c3a4fbf1714f667d7c94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackData: {fileID: 11400000, guid: 1b795090887189246b82b3fd5f7fd19c, type: 2}
+  _attackData: {fileID: 11400000, guid: 1e9d2c40cbb7cb041b3a0b4115d26672, type: 2}

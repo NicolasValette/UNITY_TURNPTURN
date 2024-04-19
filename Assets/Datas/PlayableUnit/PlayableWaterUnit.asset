@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cb52f86feaa172a448034e077f53f4a0, type: 3}
-  m_Name: PlayableUnit
+  m_Name: PlayableWaterUnit
   m_EditorClassIdentifier: 
-  _unitName: Cloud
+  _unitName: Aerith
   _maxHealth: 20
   _attacks:
-  - {fileID: 3364406001207698400, guid: 3674fe5e04056204e8d55503cb56a8c7, type: 3}
+  - {fileID: 3364406001207698400, guid: 9bcaa3f2e8f9f5243b6abf35ca10d872, type: 3}
   - {fileID: 3364406001207698400, guid: 9ee004758f62f3f4f834e747babeced8, type: 3}
-  _prefabUnit: {fileID: 2161666428199592149, guid: 2eefa5d9ee8d0f14f8440e0cffe7d3e1, type: 3}
+  _unitElement: {fileID: 11400000, guid: f7841cd7a43dcc8428caad4958405c79, type: 2}
+  _prefabUnit: {fileID: 2161666428199592149, guid: 7a7ac25de5c22e149b5a5e59ebb9d39c, type: 3}

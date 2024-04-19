@@ -16,4 +16,5 @@ MonoBehaviour:
   _maxHealth: 10
   _attacks:
   - {fileID: 3364406001207698400, guid: 3674fe5e04056204e8d55503cb56a8c7, type: 3}
+  _unitElement: {fileID: 11400000, guid: f7841cd7a43dcc8428caad4958405c79, type: 2}
   _prefabUnit: {fileID: 1547935359428554453, guid: 0637ef361e845ef4aa1bb43e7747ca83, type: 3}

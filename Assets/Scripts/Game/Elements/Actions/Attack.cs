@@ -36,15 +36,32 @@ namespace Turnpturn.Game.Actions
             PlayerSorter.OnNewRound -= Cooldown; //if we are already subscribe
             PlayerSorter.OnNewRound += Cooldown;
         }
-        public void InflictDamge(IDamageable target, int damage)
+        public int InflictDamge(IDamageable target, int damage)
         {
-            target.TakeDamage(damage);
+            int damageOutput = 0;
+            if (_attackData.AttackElement.IsStrong(target.UnitElement))
+            {
+                Debug.Log("attaque efficace");
+                damageOutput = damage * 2;
+            }
+            else if ((_attackData.AttackElement.IsWeak(target.UnitElement)))
+            {
+                Debug.Log("attaque peu efficace");
+                damageOutput = Mathf.RoundToInt(damage / 2f);
+            }
+            else
+            {
+                Debug.Log("attaque neutre");
+                damageOutput = damage;
+            }
+            target.TakeDamage(damageOutput);
+            return damageOutput;
         }
         
         public ActionType PerformAction(Unit owner, Unit target)
         {
-            InflictDamge(target, _attackData.AttackDmg);
-            ActionType act = new ActionType(ActionType.ActType.Attack, owner, target, AttackData.AttackDmg);
+            int damageDealt = InflictDamge(target, _attackData.AttackDmg);
+            ActionType act = new ActionType(ActionType.ActType.Attack, owner, target, damageDealt);
             _numberOfRoundBeforeAvailable = _attackData.AttackCDR;
             return act;
         }

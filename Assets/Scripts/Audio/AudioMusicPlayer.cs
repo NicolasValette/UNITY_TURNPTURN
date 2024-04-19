@@ -19,8 +19,7 @@ namespace Turnpturn.Audio
         private AudioMixer _audioMixer;
         [SerializeField]
         private AudioSource _audioPlayer;
-        [SerializeField]
-        private Slider _volumeSlider;
+   
         // Start is called before the first frame update
 
         public float MasterVolume { get; private set; }

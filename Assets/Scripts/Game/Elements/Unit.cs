@@ -38,11 +38,15 @@ namespace Turnpturn.Game.Elements
 
         protected IPlayAnim _animPlayer;
         protected IChooseAction _actionPicker;
+        private Unit _currentTarget;
 
         private Attack _currentAction;
+        private bool _isActionPickFInishFinished = false;
+        private bool _isActionComplete = false;
 
         public event Action<ActionType> OnAction;
         public event Action OnHealthModified;
+        public event Action OnTargetActionComplete;
         public static event Action<Unit> OnDeath;
         public static event Action OnSelected;
 
@@ -59,12 +63,13 @@ namespace Turnpturn.Game.Elements
                 return _unitData.CurrentHealth >= 0;
             }
         }
-        public bool IsFinished { get; private set; }
+        public bool IsFinished { get { return _isActionComplete && _isActionComplete; } }
         public string UnitName => _unitData.UnitName;
         public UnitData UnitCarac => _unitData;
         public Transform DamageTestSpawnPos { get => _damageTextSpawnPos; }
 
         public UnitTypePrefabsData.UnitType UnitType { get => _unitType; }
+        public ElementalTypeData UnitElement { get => UnitCarac.Element; }
 
         private void OnEnable()
         {
@@ -123,7 +128,8 @@ namespace Turnpturn.Game.Elements
         }
         public void StartTurn()
         {
-            IsFinished = false;
+            _isActionPickFInishFinished = false;
+            _isActionComplete = false;
             if (CurrentHP > 0)
             {
                 _actionPicker.ChooseAction(this);
@@ -136,7 +142,16 @@ namespace Turnpturn.Game.Elements
 
         public void EndTurn()
         {
-            IsFinished = true;
+            _isActionPickFInishFinished = true;
+        }
+        public void ActionComplete()
+        {
+            _isActionComplete = true;
+            _currentTarget.OnTargetActionComplete -= ActionComplete;
+        }
+        public void TargetActionComplete()
+        {
+            OnTargetActionComplete?.Invoke();
         }
 
         public void Wait(float waitingDuration, Action action)
@@ -176,7 +191,6 @@ namespace Turnpturn.Game.Elements
         }
         public void DamageTaken()
         {
-            Debug.Log("Dmgtaken");
             OnHealthModified?.Invoke();
         }
         public void Attack(Attack attack)
@@ -202,6 +216,8 @@ namespace Turnpturn.Game.Elements
             Unit target = _fighterManager.GetOpponent(this);
             Debug.Log($"{UnitName}(HP :{CurrentHP}) attack {target.name}(HP :{target.CurrentHP})");
             //_attack.InflictDamge(target, _attack.AttackData.AttackDmg);
+            target.OnTargetActionComplete += ActionComplete;
+            _currentTarget = target;
             ActionType act = _currentAction.PerformAction(this, target);
             OnAction?.Invoke(act);
             Wait(_waitingTimeBetweenTurn, EndTurn);

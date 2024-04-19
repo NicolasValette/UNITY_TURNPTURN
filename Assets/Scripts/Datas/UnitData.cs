@@ -17,6 +17,8 @@ namespace Turnpturn.Datas
         [SerializeField]
         protected List<Attack> _attacks;
         [SerializeField]
+        protected ElementalTypeData _unitElement;
+        [SerializeField]
         protected GameObject _prefabUnit;
 
 
@@ -29,6 +31,7 @@ namespace Turnpturn.Datas
         public List<Attack> Attacks { get => _attacks; }
 
         public GameObject PrefabUnit { get => _prefabUnit; }
+        public ElementalTypeData Element { get => _unitElement; }
         public int CurrentHealth { get; set; } = -1;
 
         public Unit GetUnitGameObject()

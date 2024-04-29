@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: CapsuleScenario
   m_EditorClassIdentifier: 
   _scenarioName: Fight for capsule
-  _description: Kill all the capsule
-  _winText: You defeat the terrible capsule ! Congratulation !
-  _defeatText: The Evil capsule wins, your next try will be better !
+  _description: Kill all the ennemies.
+  _winText: You defeat the terrible ennemy ! Congratulation !
+  _defeatText: The Evil wins, your next try will be better !
   _difficulty: 0
   _ennemyList:
   - {fileID: 11400000, guid: 4e762125e0b22f14bac91702886eea20, type: 2}

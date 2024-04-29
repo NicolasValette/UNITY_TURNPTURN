@@ -43,7 +43,8 @@ namespace Turnpturn.UI
         {
             if (action.Type == ActionType.ActType.Attack)
             {
-                GameObject go = Instantiate(_floatingTextCanvasPrefab, action.Target.DamageTestSpawnPos);
+                Quaternion rotation = Quaternion.LookRotation(_camera.transform.forward);
+                GameObject go = Instantiate(_floatingTextCanvasPrefab, action.Target.DamageTestSpawnPos.position, rotation, action.Target.DamageTestSpawnPos);
                 go.GetComponent<Canvas>().worldCamera = _camera;
                 go.GetComponentInChildren<TMP_Text>().text = action.Amount.ToString();
             }

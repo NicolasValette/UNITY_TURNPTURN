@@ -588,8 +588,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: db494bbe90d71fe42b744c28086f7534, type: 2}
-  m_sharedMaterial: {fileID: -5341982793877798417, guid: db494bbe90d71fe42b744c28086f7534, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b6c40d20c8ec401469a0735d595aa754, type: 2}
+  m_sharedMaterial: {fileID: 8167746249658666171, guid: b6c40d20c8ec401469a0735d595aa754, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -730,7 +730,7 @@ PrefabInstance:
     - target: {fileID: 6923224781996793829, guid: 851da8db01361ad4aaaf6e45e60e1fa9, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: c973a3156b726584cac32677ea57c79f, type: 3}
+      objectReference: {fileID: 8300000, guid: a648f16b56a5ad64c8af7d43adc3981c, type: 3}
     - target: {fileID: 8965089395422188438, guid: 851da8db01361ad4aaaf6e45e60e1fa9, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1026,8 +1026,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: You were defeated
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: db494bbe90d71fe42b744c28086f7534, type: 2}
-  m_sharedMaterial: {fileID: -5341982793877798417, guid: db494bbe90d71fe42b744c28086f7534, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b6c40d20c8ec401469a0735d595aa754, type: 2}
+  m_sharedMaterial: {fileID: 8167746249658666171, guid: b6c40d20c8ec401469a0735d595aa754, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1160,8 +1160,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: QUIT
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: db494bbe90d71fe42b744c28086f7534, type: 2}
-  m_sharedMaterial: {fileID: -5341982793877798417, guid: db494bbe90d71fe42b744c28086f7534, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b6c40d20c8ec401469a0735d595aa754, type: 2}
+  m_sharedMaterial: {fileID: 8167746249658666171, guid: b6c40d20c8ec401469a0735d595aa754, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1185,8 +1185,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1350,7 +1350,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 2ae627c43e13dae4c9c8990a6a6a938f, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1

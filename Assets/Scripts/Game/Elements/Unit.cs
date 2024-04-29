@@ -33,6 +33,9 @@ namespace Turnpturn.Game.Elements
         protected FightersManager _fighterManager;
         [SerializeField]
         protected float _waitingTimeBetweenTurn;
+        
+        private Renderer _renderer;
+        private int _maxFlash = 3;
 
         protected List<Attack> _actions;
 
@@ -82,6 +85,11 @@ namespace Turnpturn.Game.Elements
         // Start is called before the first frame update
         void Start()
         {
+            _renderer = GetComponentInChildren<Renderer>();
+            if (_renderer == null)
+            {
+                Debug.LogError("Render missing on " + name + " object");
+            }
         }
 
         // Update is called once per frame
@@ -171,23 +179,22 @@ namespace Turnpturn.Game.Elements
 
             Debug.Log($"{UnitName}(HP :{CurrentHP}) take {amount} damages");
             CurrentHP -= amount;
-            
+
             //Animation
-            if (CurrentHP <= 0)
-            {
-                if (_animPlayer != null)
-                {
-                    _animPlayer.PlayAnim("Death");
-                }
-                StartCoroutine(WaitBeforeDeath(1f));
-            }
-            else 
-            {
-                if (_animPlayer != null)
-                {
-                    _animPlayer.PlayAnim("TakeDmg");
-                }
-            }
+            StartCoroutine(FlashRed());
+            //if (CurrentHP <= 0)
+            //{
+            //    if (_animPlayer != null)
+            //    {
+            //        _animPlayer.PlayAnim("Death");
+            //    }
+            //    StartCoroutine(WaitBeforeDeath(1f));
+            //}
+            //else 
+            //{
+               
+             
+            //}
         }
         public void DamageTaken()
         {
@@ -238,7 +245,28 @@ namespace Turnpturn.Game.Elements
             OnSelected?.Invoke();
             _selectorGameObject.SetActive(true);
         }
-
+        private IEnumerator FlashRed()
+        {
+            int numberOfFlash = 0;
+            while (numberOfFlash <= _maxFlash)
+            {
+                _renderer.material.color = Color.red;
+                yield return new WaitForSeconds(0.1f);
+                _renderer.material.color = Color.white;
+                yield return new WaitForSeconds(0.1f);
+                numberOfFlash++;
+            }
+            _renderer.material.color = Color.white;
+            DamageTaken();
+            if (CurrentHP <= 0)
+            {
+                if (_animPlayer != null)
+                {
+                    _animPlayer.PlayAnim("Death");
+                }
+                StartCoroutine(WaitBeforeDeath(1f));
+            }
+        }
         private void OnMouseEnter()
         {
             ShowSelector();

@@ -6,7 +6,9 @@ using Turnpturn.Game.Elements;
 using Turnpturn.Interfaces.Game.IA;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Turnpturn.UI
 {
@@ -19,8 +21,7 @@ namespace Turnpturn.UI
         [SerializeField]
         private GameObject _buttonPrefab;
         [Header("Unit Panel")]
-        [SerializeField]
-        private TMP_Text _unitNameText;
+     
         [Header("ActionsPanel")]
         [SerializeField]
         private GameObject _actionsPanel;
@@ -42,7 +43,7 @@ namespace Turnpturn.UI
         // Update is called once per frame
         void Update()
         {
-
+           
         }
 
         public void ChooseAction(Unit unit)
@@ -51,7 +52,6 @@ namespace Turnpturn.UI
             _panel.SetActive(true);
             _targetPanel.SetActive(false);
             _currentUnit = unit;
-            _unitNameText.text = unit.UnitName;
             BuildButtonList(unit.Actions);
         }
 
@@ -60,7 +60,8 @@ namespace Turnpturn.UI
             CleanButtonList();
             _currentUnit.Attack(_selectedActions, target);
 
-           // _currentUnit.Wait(0.25f, _currentUnit.EndTurn);
+            // _currentUnit.Wait(0.25f, _currentUnit.EndTurn);
+            _selectedActions = null;
         }
 
         private void BuildButtonList(List<Attack> actions)
@@ -134,7 +135,30 @@ namespace Turnpturn.UI
                 }
             }
         }
+       public void OnSelect(InputValue inputValue)
+       {
+            if (_selectedActions != null)
+            {
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
 
+                if (Physics.Raycast(ray, out hit))
+                {
+                    Unit selectuedUnit = hit.transform.gameObject.GetComponent<Unit>();
+                    if (selectuedUnit != null)
+                    {
+                        _targetPanel.SetActive(false);
+                        _buttonClickPlayer.PlayClick();
+                        selectuedUnit.HideSelector();
+                        MakeAction(selectuedUnit);
+                    }
+                    
 
+                }
+            }
+        }
     }
+
+
+
 }

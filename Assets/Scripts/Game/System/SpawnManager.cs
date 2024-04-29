@@ -31,8 +31,9 @@ public class SpawnManager : MonoBehaviour
     {
         if (positionSlot < _ennemySpawnPosList.Count)
         {
+            Quaternion lookRotation = Quaternion.LookRotation(_heroSpawnPosList[0].position - _ennemySpawnPosList[0].position);
             unitData.CurrentHealth = unitData.MaxHealth;
-            GameObject go = Instantiate(unitData.PrefabUnit, _ennemySpawnPosList[positionSlot].position, Quaternion.identity);
+            GameObject go = Instantiate(unitData.PrefabUnit, _ennemySpawnPosList[positionSlot].position, lookRotation);
             go.name = unitData.UnitName;
             go.GetComponent<Unit>().InitUnit(unitData, unitData.CurrentHealth);
             return go;
@@ -46,7 +47,8 @@ public class SpawnManager : MonoBehaviour
     }
     public GameObject SpawnUnit(UnitData unitData)
     {
-        GameObject go = Instantiate(unitData.PrefabUnit, _heroSpawnPosList[0].position, Quaternion.identity);
+        Quaternion lookRotation = Quaternion.LookRotation(_ennemySpawnPosList[0].position - _heroSpawnPosList[0].position);
+        GameObject go = Instantiate(unitData.PrefabUnit, _heroSpawnPosList[0].position, lookRotation);
         go.name = unitData.UnitName;
         go.GetComponent<Unit>().InitUnit(unitData, unitData.CurrentHealth);
         UnitPlayer unitp = go.GetComponent<UnitPlayer>();

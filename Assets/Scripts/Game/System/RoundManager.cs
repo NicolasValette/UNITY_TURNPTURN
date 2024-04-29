@@ -27,6 +27,7 @@ namespace Turnpturn.Game.System
         private void OnEnable()
         {
             Unit.OnDeath += UnitDeath;
+            
         }
         private void OnDisable()
         {
@@ -62,6 +63,7 @@ namespace Turnpturn.Game.System
                 else if (IsTurnFinish())
                 {
                     Debug.Log($"End of {_currentUnit.UnitName}'s turn.");
+
                     NextTurn();
                 }
             }
@@ -77,6 +79,8 @@ namespace Turnpturn.Game.System
 
         private void NextTurn()
         {
+            
+          
             _currentUnit = _playerSorter.GetNextPlayer();
             Debug.Log($"{_currentUnit.UnitName}'s turn.");
             OnNewTurn?.Invoke();
@@ -99,6 +103,7 @@ namespace Turnpturn.Game.System
                 _isGameOver = true;
             }
         }
+      
 
     }
 }
